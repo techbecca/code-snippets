@@ -1,0 +1,58 @@
+
+<!---> Instructions
+The document.getElementsByTagName method returns all child elements with a given tag name. Implement your own version of this as a function that takes a node and a string (the tag name) as arguments and returns an array containing all descendant element nodes with the given tag name.
+
+To find the tag name of an element, use its nodeName property. But note that this will return the tag name in all uppercase. Use the toLowerCase or toUpperCase string methods to compensate for this.
+</!--->
+
+<h1>Heading with a <span>span</span> element.</h1>
+<p>A paragraph with <span>one</span>, <span>two</span>
+  spans.</p>
+
+<script>
+  function byTagName(node, tagName, elements) {
+    // Your code here.
+    // Create array to collect elements
+    if (!elements) {
+      elements = [];
+    }
+    // Get child nodes
+    const children = node.children;
+    // Iterate through child nodes
+    for (const child of children) {
+      // check that node is an element (and not text, comment, etc.)
+      if (child.nodeType === Node.ELEMENT_NODE){
+        // Get the child's node name
+      	let nodeName = child.nodeName.toLowerCase()
+        console.log('NodeName: ' + nodeName + '\t TagName: ' + tagName);
+    	// If same as tagName, add to elements
+        if (nodeName === tagName.toLowerCase()) {
+          elements.push(child);
+        }
+		// Check if it has children
+        if (child.children.length > 0) {
+         // Check if children has matching tags
+         byTagName(child, tagName,elements);
+        }
+      }
+    }
+    // Return elements
+    return elements
+  }
+
+  console.log(byTagName(document.body, "h1").length);
+  // → 1
+  console.log(byTagName(document.body, "span").length);
+  // → 3
+  let para = document.querySelector("p");
+  console.log(byTagName(para, "span").length);
+  // → 2
+</script>
+
+<!---> Hints
+The solution is most easily expressed with a recursive function, similar to the talksAbout function defined earlier in this chapter.
+
+You could call byTagname itself recursively, concatenating the resulting arrays to produce the output. Or you could create an inner function that calls itself recursively and that has access to an array binding defined in the outer function, to which it can add the matching elements it finds. Don’t forget to call the inner function once from the outer function to start the process.
+
+The recursive function must check the node type. Here we are interested only in node type 1 (Node.ELEMENT_NODE). For such nodes, we must loop over their children and, for each child, see whether the child matches the query while also doing a recursive call on it to inspect its own children.
+</!--->
