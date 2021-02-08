@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+    .trail { /* className for the trail elements */
+      position: absolute;
+      height: 6px; width: 6px;
+      border-radius: 3px;
+      background: teal;
+    }
+    body {
+      height: 300px;
+    }
+  </style>
+
+  <script>
+    let divs = [];
+    for (let i = 0; i < 10; i++) {
+      let div = document.createElement('div');
+      div.className = "trail";
+      div.style.transition = "all 0.5s ease-in-out"
+      div.style.transitionDelay = 0.02*i + "s";
+      console.log("pushing to div, length: " + divs.push(div));
+      document.body.appendChild(div);
+    }
+
+    let count = 0;
+    function trail(event){
+      // count +=1; //count moves in order to cycle through trail elements
+      // let i = count % divs.length; // get appropriate index for next element to move
+      // let element = divs[i];
+      // element.style.left = event.clientX + "px";
+      // element.style.top = event.clientY + "px";
+      divs.forEach((item, i) => {
+        item.style.left = event.clientX + "px";
+        item.style.top = event.clientY + "px";
+      });
+
+    }
+
+    let timeout;
+    document.addEventListener('mousemove', event => {
+      clearTimeout(timeout);
+      setTimeout(trail(event), 10);
+    })
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <p>🎈</p>
+  <script type="text/javascript">
+    let p = document.body.querySelector('p');
+    let size;
+    function setSize(pixels) {
+      p.style.fontSize = pixels + "px";
+      console.log("p.style.fontSize: " + p.style.fontSize);
+      size = pixels;
+
+    }
+
+    setSize(40);
+
+    function resize(event){
+      if(event.key === "ArrowUp") {
+        setSize(size*1.1);
+        event.preventDefault();
+      } else if (event.key === "ArrowDown") {
+        setSize(size*0.9);
+        event.preventDefault();
+      }
+
+      if (size > 150) {
+        window.removeEventListener('keydown', resize);
+        p.textContent = "💥";
+      }
+    }
+
+    window.addEventListener('keydown', resize);
+  </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    tab-panel {
+      border: 1px solid grey;
+      border-radius: 4px;
+      height: 500px;
+      display: block;
+    }
+
+    div {
+      margin: 20px;
+      padding: 10px;
+      background-color: lightgray;
+      width: 200px;
+      height: 400px;
+    }
+
+    button {
+      margin: 5px;
+      width: 50px;
+    }
+  </style>
+</head>
+<body>
+  <tab-panel>
+    <div data-tabname="one">Tab one</div>
+    <div data-tabname="two">Tab two</div>
+    <div data-tabname="three">Tab three</div>
+  </tab-panel>
+  <script>
+    function asTabs(node) {
+      // Get divs
+      let divs = node.querySelectorAll('div');
+      // Insert list of button elements at the top of the node, one for each element, displaying data-tabname of the child elements
+      Array.from(divs).forEach((item, i) => {
+        let button = document.createElement('button');
+        let tabName = item.getAttribute('data-tabname');
+        button.name = tabName;
+        button.type = 'button';
+        button.textContent = tabName;
+        // add onclick functionality to button
+        // eventListener callback calls a specific function
+        button.addEventListener('click', () => tabActivator(tabName, node));
+        node.insertBefore(button, divs[0]);
+      });
+      // Hide all but one of the original children
+      changeTab('one', node);
+    }
+
+    function changeTab(tabName, node) {
+      let divs = node.querySelectorAll('div');
+      Array.from(divs).forEach((item, i) => {
+        let button = node.querySelector(`button[name=${item.getAttribute('data-tabName')}]`);
+        if (item.getAttribute('data-tabname') === tabName) {
+          item.style.display = 'block';
+          button.style.backgroundColor = 'hsl(120deg 100% 50% / 48%)';
+        } else {
+          item.style.display = 'none';
+          button.style.backgroundColor = 'white';
+        }
+      });
+
+    }
+
+    // Clicking the buttons should change which node is visible
+    // Add function to all buttons but use attribute data-tabname to match button to div to show
+    function tabActivator(tabName, node) {
+      let div = node.querySelector(`[data-tabName=${tabName}]`);
+      // Checks if div is hidden
+      if (div.style.display === 'none') {
+        // Only changes which pane to show if div was not showing
+        changeTab(tabName, node);
+      }
+    }
+
+
+    asTabs(document.querySelector("tab-panel"));
+  </script>
+</body>
+</html>
